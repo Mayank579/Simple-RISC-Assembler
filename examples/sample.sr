@@ -1,10 +1,1 @@
-start:  nop                 # No operation
-        add r1, r2, r3      # r1 = r2 + r3
-        sub r4, r1, 10      # r4 = r1 - 10
-        cmp r5, r6          # Compare r5 and r6
-        mov r7, 15          # r7 = 15
-        ld r8, 2[r9]        # Load value from memory at (r9 + 2) into r8
-        st r8, 3[r10]       # Store r8 at memory address (r10 + 3)
-        bgt end             # Branch to 'end' if r5 > r6
-        b start             # Unconditional branch (loop)
-end:    hlt                 # Halt execution
+your simple risc code here

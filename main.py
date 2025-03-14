@@ -1,6 +1,6 @@
-# main.py
-
+import streamlit as st
 import sys
+import tempfile
 from assembler import parser, symbol_table, encoder
 
 def first_pass(instructions):
@@ -33,11 +33,24 @@ def assemble(filepath):
     machine_codes = second_pass(instructions, symtab)
     return machine_codes
 
+def main():
+    st.title("Assembler Application")
+    st.write("Upload your assembly file (.sr) to get machine code.")
+
+    # File uploader widget
+    uploaded_file = st.file_uploader("Choose an assembly file", type=['sr'])
+    if uploaded_file is not None:
+        # Read the file content as text.
+        file_contents = uploaded_file.read().decode("utf-8")
+        # Create a temporary file to pass to the assembler (since your parser expects a filepath)
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".sr") as tmp:
+            tmp.write(file_contents.encode("utf-8"))
+            tmp.flush()
+            machine_codes = assemble(tmp.name)
+
+        st.subheader("Machine Codes (32-bit binary):")
+        for code in machine_codes:
+            st.text(f"{code:032b}")
+
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("Usage: python main.py <assembly_file.sr>")
-        sys.exit(1)
-    assembly_file = sys.argv[1]
-    machine_codes = assemble(assembly_file)
-    for code in machine_codes:
-        print(f"{code:032b}")  # print as 32-bit binary string
+    main()
