@@ -1,0 +1,281 @@
+.code-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    height: calc(100vh - 180px);
+    overflow: auto;
+    max-height: calc(100vh - 200px);
+  }
+  
+  .editor-panel, .output-panel {
+    background: #252526;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #3e3e42;
+  }
+  
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    background: #333333;
+    border-bottom: 1px solid #3e3e42;
+  }
+  
+  .panel-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .panel-header h2::before {
+    font-family: 'Consolas', monospace;
+    font-size: 0.8em;
+    opacity: 0.7;
+  }
+  
+  .editor-panel .panel-header h2::before {
+    content: '{ }';
+    color: #0098ff;
+  }
+  
+  .output-panel .panel-header h2::before {
+    content: '→';
+    color: #61dafb;
+  }
+  
+  .register-panel .panel-header h2::before {
+    content: '⚡';
+    color: #00ff9d;
+  }
+  
+  .editor-panel .panel-header::after {
+    background: #0098ff;
+  }
+  
+  .output-panel .panel-header::after {
+    background: #61dafb;
+  }
+  
+  .register-panel .panel-header::after {
+    background: #00ff9d;
+  }
+  
+  .code-editor {
+    width: 100%;
+    height: calc(100% - 50px);
+    background: #1e1e1e;
+    border: none;
+    color: #d4d4d4;
+    padding: 1rem;
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+  }
+  
+  .output-display {
+    flex: 1;
+    margin: 0;
+    padding: 1rem;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    overflow-y: auto;
+  }
+  
+  .run-button {
+    background: #0098ff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+  
+  .run-button:hover {
+    background: #0082db;
+  }
+  
+  .run-icon {
+    font-size: 0.8rem;
+  }
+
+  .compile-button {
+    background: linear-gradient(135deg, #61dafb, #0098ff);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(97, 218, 251, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .compile-button:hover {
+    background: linear-gradient(135deg, #0098ff, #0082db);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(97, 218, 251, 0.3);
+  }
+
+  .compile-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .compile-icon {
+    font-size: 1.2rem;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+    transition: transform 0.3s ease;
+  }
+
+  .compile-button:hover .compile-icon {
+    transform: rotate(180deg);
+  }
+
+  .format-buttons {
+    display: flex;
+    gap: 0.3rem;
+    background: linear-gradient(to right, #252526, #1e1e1e);
+    padding: 0.4rem;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  .format-button {
+    background: transparent;
+    color: #8b8b8b;
+    border: 1px solid #3e3e42;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 80px;
+    letter-spacing: 0.5px;
+  }
+  
+  .format-button:hover {
+    background: rgba(97, 218, 251, 0.1);
+    border-color: #61dafb;
+    color: #61dafb;
+  }
+  
+  .format-button.active {
+    background: linear-gradient(135deg, #61dafb20, #0098ff40);
+    color: #61dafb;
+    border-color: #61dafb;
+    box-shadow: 0 0 10px rgba(97, 218, 251, 0.2);
+  }
+
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .output-panel {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .register-panel {
+    background: #252526;
+    border-radius: 8px;
+    border: 1px solid #3e3e42;
+    overflow: hidden;
+    height: auto;  /* Changed to auto */
+    margin-bottom: 1.5rem;
+    max-height: 300px;
+    overflow: auto;
+  }
+
+  .registers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);  /* 4 columns */
+    grid-auto-rows: minmax(80px, auto);  /* Fixed row height */
+    gap: 1rem;
+    padding: 1rem;
+    background: #1e1e1e;
+    overflow: visible;
+  }
+
+  .register-item {
+    background: #2d2d2d;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #3e3e42;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: border-color 0.2s;
+  }
+
+  .register-item:hover {
+    border-color: #0098ff;
+  }
+
+  /* Remove all animation-related styles */
+  .register-item::before,
+  .register-item::after,
+  .editor-panel::before,
+  .output-panel::before,
+  .register-panel::before {
+    display: none;
+  }
+
+  .register-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0098ff;
+    letter-spacing: 0.5px;
+  }
+
+  .register-value {
+    font-family: 'Consolas', monospace;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    background: #252526;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    min-height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Remove all keyframe animations except for highlight */
+  @keyframes highlight {
+    0% { background-color: #0098ff33; }
+    100% { background-color: transparent; }
+  }
+
+  .register-value-changed {
+    animation: highlight 1s ease;
+  }
+
+  * {
+    transition: border-color 0.2s;
+  }

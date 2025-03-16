@@ -1,5 +1,11 @@
 .App {
+  background-color: #1e1e1e;
+  min-height: 100vh;
+  color: #ffffff;
   text-align: center;
+  position: relative;
+  overflow: auto;
+  max-height: 100vh;
 }
 
 .App-logo {
@@ -14,14 +20,21 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a, #252526, #1a1a1a);
+  padding: 2.5rem;
+  border-bottom: 2px solid #3e3e42;
+  position: relative;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  text-align: center;
+  gap: 1rem;
 }
 
 .App-link {
@@ -34,5 +47,184 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+.app-title {
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(45deg, #61dafb, #0098ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  position: relative;
+  margin: 0;
+  padding-bottom: 0.5rem;
+}
+
+.app-title::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #61dafb, transparent);
+  transform: translateX(-50%);
+}
+
+.app-subtitle {
+  color: #8b8b8b;
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  background: #1e1e1e;
+  overflow: hidden;
+  pointer-events: none;  /* Ensure background doesn't block input */
+}
+
+.binary-rain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: #0098ff;
+  font-family: 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.rain-column {
+  position: absolute;
+  top: -20px;
+  display: flex;
+  flex-direction: column;
+  animation: rain-fall linear infinite;
+}
+
+.rain-digit {
+  opacity: 0;
+  animation: fade-in-out 2s linear infinite;
+  text-shadow: 0 0 8px #0098ff;
+}
+
+@keyframes rain-fall {
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes fade-in-out {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.8; }
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 2;  /* Increased z-index */
+  backdrop-filter: blur(2px);
+  min-height: 100vh;
+  background: rgba(30, 30, 30, 0.85);
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
+/* Add styles to ensure editor is interactive */
+.code-editor, .run-button, .format-button {
+  position: relative;
+  z-index: 3;  /* Higher than content-wrapper */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  overflow: auto;
+  max-height: calc(100vh - 100px); /* Account for header */
+}
+
+.panel-header {
+  background: linear-gradient(to right, #333333, #2d2d2d);
+  padding: 1rem 1.2rem;
+  border-bottom: 2px solid #3e3e42;
+  position: relative;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #e0e0e0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.panel-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: #0098ff;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3e3e42;
+  border-radius: 5px;
+  border: 2px solid #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #525256;
+}
+
+::-webkit-scrollbar-corner {
+  background: #1e1e1e;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3e3e42 #1e1e1e;
+}
+
+.code-editor, .output-display, .registers-grid {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #0098ff33;
+    &:hover {
+      background: #0098ff66;
+    }
   }
 }
