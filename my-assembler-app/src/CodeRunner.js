@@ -13,7 +13,7 @@ function CodeRunner() {
       setOutput("Compiling...");
 
       const response = await fetch(
-        "https://simple-risc-assembler.onrender.com/",
+        "https://simple-risc-assembler.onrender.com/run-code",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
