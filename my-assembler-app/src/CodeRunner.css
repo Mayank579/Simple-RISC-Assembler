@@ -2,13 +2,13 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
-    height: calc(100vh - 180px);
+    height: calc(100vh - 100px);
     overflow: auto;
     max-height: calc(100vh - 200px);
   }
   
   .editor-panel, .output-panel {
-    background: #252526;
+    background: #4444cc;
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid #3e3e42;
@@ -67,7 +67,7 @@
   
   .code-editor {
     width: 100%;
-    height: calc(100% - 50px);
+    height:450px;
     background: #1e1e1e;
     border: none;
     color: #d4d4d4;
@@ -187,9 +187,10 @@
   }
 
   .right-panel {
+    height: calc(100vh - 140px);
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .output-panel {
@@ -197,6 +198,7 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
+    height: 60%;
   }
 
   .register-panel {
@@ -204,10 +206,8 @@
     border-radius: 8px;
     border: 1px solid #3e3e42;
     overflow: hidden;
-    height: auto;  /* Changed to auto */
-    margin-bottom: 1.5rem;
-    max-height: 300px;
-    overflow: auto;
+    height: 40%;
+    margin-bottom: 0;
   }
 
   .registers-grid {
