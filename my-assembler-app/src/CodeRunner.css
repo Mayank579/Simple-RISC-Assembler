@@ -67,11 +67,7 @@
   
   .code-editor {
     width: 100%;
-<<<<<<< HEAD
-    height:450px;
-=======
     height: 450px;
->>>>>>> 66c3dbe1cbaa5b61c518283ed9a0a2458f2ef87b
     background: #1e1e1e;
     border: none;
     color: #d4d4d4;
@@ -80,7 +76,7 @@
     font-size: 14px;
     resize: none;
     outline: none;
-  }
+}
   
   .output-display {
     flex: 1;
