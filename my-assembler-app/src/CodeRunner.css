@@ -8,7 +8,7 @@
   }
   
   .editor-panel, .output-panel {
-    background: #4444cc;
+    background: linear-gradient(135deg, #d0f0f9, #008ae6);
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid #3e3e42;
@@ -205,7 +205,7 @@
     background: #252526;
     border-radius: 8px;
     border: 1px solid #3e3e42;
-    overflow: hidden;
+    overflow: auto;
     height: 40%;
     margin-bottom: 0;
   }

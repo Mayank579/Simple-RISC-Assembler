@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import re
 from assembler_runner import run_assembler
 from interpreter.simulator import execute_program  # Import the simulator
 
@@ -12,27 +13,49 @@ def run_code():
     code = data.get('code', '')
     
     try:
-        if not code.strip():  # If no code provided, return all zeros
+        if not code.strip():
             return jsonify({
                 'output': '',
                 'registers': [0] * 16
             })
             
-        machine_codes = run_assembler(code)
-        registers = execute_program(machine_codes)
+        # First pass: collect labels
+        labels = {}
+        instructions = []
+        current_address = 0
+        
+        for line in code.split('\n'):
+            line = line.strip()
+            if not line or line.startswith(';'):
+                continue
+                
+            if ':' in line:
+                label, *rest = line.split(':')
+                label = label.strip().lower()
+                labels[label] = current_address
+                line = ':'.join(rest).strip()
+                if not line:
+                    continue
+            
+            if line:
+                instructions.append(line)
+                current_address += 4
+        
+        # Execute program and get register state
+        machine_codes = run_assembler(instructions, labels)
+        register_state = execute_program(machine_codes)
+        
         output_lines = [f"{mc:032b}" for mc in machine_codes]
         output = "\n".join(output_lines)
         
-        response = {
+        return jsonify({
             'output': output,
-            'registers': registers
-        }
-        return jsonify(response)
+            'registers': register_state  # Send register state to frontend
+        })
         
     except Exception as e:
-        print(f"Error occurred: {str(e)}")
         return jsonify({
-            'output': str(e),
+            'output': f"Error: {str(e)}",
             'registers': [0] * 16
         })
 

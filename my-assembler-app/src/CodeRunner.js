@@ -11,25 +11,22 @@ function CodeRunner() {
   const handleCompile = async () => {
     try {
       setOutput("Compiling...");
-      console.log("Compiling code:", code);
       
       const response = await fetch("http://127.0.0.1:5000/run-code", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code })
       });
-      const data = await response.json();
-      console.log("Received response:", data);
       
-      setOutput(data.output);
+      const data = await response.json();
+      
       if (data.registers) {
-        console.log("Updating registers with:", data.registers);
-        setRegisters(data.registers);
+        console.log("Updating registers:", data.registers);
+        setRegisters(data.registers);  // Update register state
       }
+      
+      setOutput(data.output || "Compilation completed");
     } catch (error) {
-      console.error("Error running code:", error);
       setOutput("Error: " + error.message);
     }
   };
