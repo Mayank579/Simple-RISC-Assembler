@@ -5,15 +5,17 @@ function RegisterDisplay({ registers, format }) {
   const [changed, setChanged] = useState(new Set());
 
   useEffect(() => {
+    console.log("Registers updated:", registers);
     // Detect changed values
     const changedIndexes = new Set();
     registers.forEach((value, idx) => {
       if (value !== prevRegisters[idx]) {
         changedIndexes.add(idx);
+        console.log(`Register ${idx} changed: ${prevRegisters[idx]} -> ${value}`);
       }
     });
     setChanged(changedIndexes);
-    setPrevRegisters(registers);
+    setPrevRegisters([...registers]);
 
     // Clear highlights after animation
     if (changedIndexes.size > 0) {

@@ -27,13 +27,46 @@ def assemble(filepath):
     machine_codes = second_pass(instructions, symtab)
     return machine_codes
 
-def run_assembler(code_text):
-    # Write the provided code to a temporary file
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".sr") as tmp:
-        tmp.write(code_text.encode("utf-8"))
-        tmp.flush()
-        machine_codes = assemble(tmp.name)
-    return machine_codes
+def run_assembler(code_text, labels=None):
+    """
+    Assemble the code with optional label resolution
+    """
+    try:
+        # Clean and normalize the code
+        if isinstance(code_text, list):
+            instructions = code_text
+        else:
+            instructions = [line.strip() for line in code_text.split('\n') if line.strip()]
+        
+        # Process each instruction
+        machine_codes = []
+        current_address = 0
+        
+        for instr in instructions:
+            # Skip comments and empty lines
+            if not instr or instr.startswith(';'):
+                continue
+                
+            # Remove label if present in instruction
+            if ':' in instr:
+                instr = instr.split(':', 1)[1].strip()
+                if not instr:
+                    continue
+            
+            # Parse instruction and encode
+            tokens = instr.split()
+            opcode = tokens[0].upper()
+            operands = tokens[1:] if len(tokens) > 1 else []
+            
+            # Encode the instruction
+            machine_code = encoder.encode_instruction(opcode, operands, labels, current_address)
+            machine_codes.append(machine_code)
+            current_address += 4
+            
+        return machine_codes
+        
+    except Exception as e:
+        raise Exception(f"Assembly error: {str(e)}")
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
