@@ -67,7 +67,7 @@
   
   .code-editor {
     width: 100%;
-    height: calc(100% - 50px);
+    height: 450px;
     background: #1e1e1e;
     border: none;
     color: #d4d4d4;
