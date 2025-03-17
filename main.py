@@ -1,63 +1,56 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import re
-from assembler_runner import run_assembler
-from interpreter.simulator import execute_program  # Import the simulator
+import streamlit as st
+import sys
+import tempfile
+from assembler import parser, symbol_table, encoder
 
-app = Flask(__name__)
-CORS(app)
+def first_pass(instructions):
+    """
+    Build the symbol table by recording labels with their corresponding addresses.
+    """
+    symtab = symbol_table.SymbolTable()
+    pc = 0
+    for line_num, label, opcode, operands in instructions:
+        if label:
+            symtab.add_label(label, pc)
+        pc += 4  # each instruction is 4 bytes
+    return symtab
 
-@app.route('/run-code', methods=['POST'])
-def run_code():
-    data = request.get_json()
-    code = data.get('code', '')
-    
-    try:
-        if not code.strip():
-            return jsonify({
-                'output': '',
-                'registers': [0] * 16
-            })
-            
-        # First pass: collect labels
-        labels = {}
-        instructions = []
-        current_address = 0
-        
-        for line in code.split('\n'):
-            line = line.strip()
-            if not line or line.startswith(';'):
-                continue
-                
-            if ':' in line:
-                label, *rest = line.split(':')
-                label = label.strip().lower()
-                labels[label] = current_address
-                line = ':'.join(rest).strip()
-                if not line:
-                    continue
-            
-            if line:
-                instructions.append(line)
-                current_address += 4
-        
-        # Execute program and get register state
-        machine_codes = run_assembler(instructions, labels)
-        register_state = execute_program(machine_codes)
-        
-        output_lines = [f"{mc:032b}" for mc in machine_codes]
-        output = "\n".join(output_lines)
-        
-        return jsonify({
-            'output': output,
-            'registers': register_state  # Send register state to frontend
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'output': f"Error: {str(e)}",
-            'registers': [0] * 16
-        })
+def second_pass(instructions, symtab):
+    """
+    Encode instructions into machine code.
+    """
+    machine_codes = []
+    pc = 0
+    for line_num, label, opcode, operands in instructions:
+        code = encoder.encode_instruction(opcode, operands, symtab, pc)
+        machine_codes.append(code)
+        pc += 4
+    return machine_codes
+
+def assemble(filepath):
+    instructions = parser.parse_file(filepath)
+    symtab = first_pass(instructions)
+    machine_codes = second_pass(instructions, symtab)
+    return machine_codes
+
+def main():
+    st.title("Assembler Application")
+    st.write("Upload your assembly file (.sr) to get machine code.")
+
+    # File uploader widget
+    uploaded_file = st.file_uploader("Choose an assembly file", type=['sr'])
+    if uploaded_file is not None:
+        # Read the file content as text.
+        file_contents = uploaded_file.read().decode("utf-8")
+        # Create a temporary file to pass to the assembler (since your parser expects a filepath)
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".sr") as tmp:
+            tmp.write(file_contents.encode("utf-8"))
+            tmp.flush()
+            machine_codes = assemble(tmp.name)
+
+        st.subheader("Machine Codes (32-bit binary):")
+        for code in machine_codes:
+            st.text(f"{code:032b}")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    main()
